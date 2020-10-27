@@ -29,6 +29,18 @@ h1 {
   margin: 0;
 }
 
+h2{
+  font-size: 50px;
+}
+
+h2:hover{
+  color: green;
+}
+*::selection{
+  color:white;
+  background-color: black;
+}
+
 h3 {
   border-bottom: 1px solid #bbb;
   padding-bottom: 10px;
@@ -65,11 +77,11 @@ h4 {
 }
 
 .money.plus {
-  color: #2ecc71;
+  color: #18c05e;
 }
 
 .money.minus {
-  color: #c0392b;
+  color: #cc4435;
 }
 
 label {
@@ -89,7 +101,7 @@ input[type='number'] {
 
 .btn {
   cursor: pointer;
-  background-color: #9c88ff;
+  background-color: #745de7;
   box-shadow: var(--box-shadow);
   color: #fff;
   border: 0;
