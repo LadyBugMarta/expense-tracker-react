@@ -6,7 +6,10 @@ import axios from 'axios';
 const initialState = {
   transactions: [],
   error: null,
-  loading: true
+  loading: true,
+  username: '',
+  password: '',
+  password_confirmation: ''
 }
 
 // Create context
@@ -19,12 +22,20 @@ export const GlobalProvider = ({ children }) => {
   // Actions
   async function getTransactions(){
     try {
-      const res = await axios.get('/api/v1/transactions')
+      const res = await axios.get('/api/v1/transactions', {
+        headers: {
+          authorization: localStorage.getItem('token')
+        }
+      })
       dispatch({
         type: 'GET_TRANSACTIONS',
         payload: res.data.data
       });
     } catch (err) {
+        if (err.toString().includes('401')) {
+          window.location.href = './login';
+        }
+      
         dispatch({
         type: 'TRANSACTION_ERROR',
         payload: err.response.data.error
@@ -32,10 +43,47 @@ export const GlobalProvider = ({ children }) => {
     }
   }
 
+  async function login(payload){
+    try {
+      const res = await axios.post('/api/v1/auth/signin', payload);
+      localStorage.setItem('token', res.data.token);
+      window.location.href = './';
+      dispatch({
+        type: 'LOGIN',
+        payload: res.data.data
+      });
+    } catch (err) {
+        dispatch({
+        type: 'LOGIN_ERROR',
+        payload: err.response.data.error
+      });
+    }
+  }
+
+  async function register(payload){
+    try {
+      await axios.post('/api/v1/auth/signup', payload);
+      dispatch({
+        type: 'REGISTER'
+      });
+      window.location.href = './login';
+    } catch (err) {
+        dispatch({
+        type: 'REGISTER_ERROR',
+        payload: err.response.data.error
+      });
+    }
+  }
+
   async function deleteTransaction(id) {
     try {
-      await axios.delete(`/api/v1/transactions/${id}`)
+      await axios.delete(`/api/v1/transactions/${id}`, { headers: {
+        authorization: localStorage.getItem('token')
+      }})
     } catch (err) {
+      if (err.toString().includes('401')) {
+        window.location.href = './login';
+      }
       dispatch({
         type: 'TRANSACTION_ERROR',
         payload: err.response.data.error
@@ -51,7 +99,8 @@ export const GlobalProvider = ({ children }) => {
   async function addTransaction(transaction) {
     const config = {
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'authorization': localStorage.getItem('token')
       }
     }
 
@@ -63,6 +112,9 @@ export const GlobalProvider = ({ children }) => {
       });
 
     } catch (err) {
+      if (err.toString().includes('401')) {
+        window.location.href = './login';
+      }
       dispatch({
         type: 'TRANSACTION_ERROR',
         payload: err.response.data.error
@@ -76,7 +128,9 @@ export const GlobalProvider = ({ children }) => {
     loading: state.loading,
     getTransactions,
     deleteTransaction,
-    addTransaction
+    addTransaction,
+    login,
+    register
   }}>
     {children}
   </GlobalContext.Provider>);

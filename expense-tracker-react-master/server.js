@@ -10,6 +10,8 @@ dotenv.config({path: './config/config.env'});
 connectDB();
 
 const transactions = require('./Routes/transactions');
+const auth = require('./Routes/auth');
+const { authMiddleware } = require('./Middleware/auth');
 
 const app = express();
 
@@ -19,7 +21,8 @@ if(process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
 
-app.use('/api/v1/transactions', transactions);
+app.use('/api/v1/auth', auth);
+app.use('/api/v1/transactions', authMiddleware, transactions);
 
 if(process.env.NODE_ENV === 'production'){
     app.use(express.static('Client/build'));

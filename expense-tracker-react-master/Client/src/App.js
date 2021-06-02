@@ -1,23 +1,23 @@
 import React from 'react';
-import { Header } from './components/Header';
-import { Balance } from './components/Balance';
-import { IncomeExpenses } from './components/IncomeExpenses';
-import { TransactionList } from './components/TransactionList';
-import { AddTransaction } from './components/AddTransaction';
-import { GlobalProvider } from './context/GlobalState';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import './App.css';
+import {Login} from './components/Login';
+import {Register} from './components/Register';
+import {Layout} from './components/Layout';
+import { GlobalProvider } from './context/GlobalState';
 
 function App() {
-  return (
-    <GlobalProvider>
-      <Header />
-      <div className="container">
-        <Balance />
-        <IncomeExpenses />
-        <TransactionList />
-        <AddTransaction />
+  return (<Router>
+      <GlobalProvider>
+      <div className="auth-inner">
+        <Switch>
+          <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
+          <Route path="/" component={Layout} />
+        </Switch>
       </div>
-    </GlobalProvider>
+      </GlobalProvider>
+  </Router>
   );
 }
 

@@ -1,7 +1,7 @@
 export default (state, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case 'GET_TRANSACTIONS':
-      return{
+      return {
         ...state,
         loading: false,
         transactions: action.payload
@@ -16,11 +16,33 @@ export default (state, action) => {
         ...state,
         transactions: [...state.transactions, action.payload]
       }
-      case 'TRANSACTION_ERROR':
-        return {
-          ...state,
-          error: action.payload
-        }
+    case 'LOGIN':
+      return {
+        ...state,
+        transactions: [...state.transactions, action.payload],
+        error: false
+      }
+    case 'REGISTER':
+      return {
+        ...state,
+        transactions: [...state.transactions, action.payload],
+        error: false
+      }
+    case 'TRANSACTION_ERROR':
+      return {
+        ...state,
+        error: action.payload
+      }
+    case 'LOGIN_ERROR':
+      return {
+        ...state,
+        error: true
+      }
+    case 'REGISTER_ERROR':
+      return {
+        ...state,
+        error: true
+      }
     default:
       return state;
   }
