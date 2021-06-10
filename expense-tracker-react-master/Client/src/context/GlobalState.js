@@ -1,5 +1,5 @@
 import React, { createContext, useReducer } from 'react';
-import AppReducer from './AppReducer';
+import AppReducer from './appReducer';
 import axios from 'axios';
 
 // Initial state
@@ -105,7 +105,6 @@ export const GlobalProvider = ({ children }) => {
     }
 
     try {
-      const res = await axios.post('/api/v1/transactions', transaction, config);
       dispatch({
         type: 'ADD_TRANSACTION',
         payload: transaction

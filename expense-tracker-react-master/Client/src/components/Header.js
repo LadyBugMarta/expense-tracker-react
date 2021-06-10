@@ -10,8 +10,8 @@ export const Header = () => {
       <h2>
         Expense Tracker
       </h2>
-      <button class="btn" onClick={logout}>
-        Wyloguj
+      <button className="btn" onClick={logout}>
+        Log out
       </button>
     </>
   )

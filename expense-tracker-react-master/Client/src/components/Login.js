@@ -1,12 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { GlobalContext } from '../context/GlobalState';
+import { GlobalContext } from '../context/globalState';
 
 export const Login = () => {
-    if (localStorage.getItem('token')) {
-        window.location.href = './';
-    }
-
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const { login, error } = useContext(GlobalContext);
@@ -16,9 +12,15 @@ export const Login = () => {
         login({username, password});
     }
 
+    useEffect(() => {
+        if (localStorage.getItem('token')) {
+            window.location.href = './';
+        }
+    }, [])
+
     return (
         <form onSubmit={handleSubmit}>
-            <h3>Zaloguj</h3>
+            <h3>Sign in</h3>
 
             <div>
                 <label>Username</label>
@@ -26,12 +28,12 @@ export const Login = () => {
             </div>
 
             <div>
-                <label>Hasło</label>
-                <input name="password" required type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Hasło" />
+                <label>Password</label>
+                <input name="password" required type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
             </div>
-            {error ? <p>Błąd podczas logowania</p> : <></>}
-            <div className="space"><Link to={"/register"}>Zarejestruj</Link></div>
-            <button type="submit" className="btn">Zaloguj</button>
+            {error ? <p>Login error</p> : <></>}
+            <div className="space"><Link to={"/register"}>Register</Link></div>
+            <button type="submit" className="btn">Sign in</button>
         </form>
     );
 }
